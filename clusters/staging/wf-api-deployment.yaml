@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: workforce-api
+  namespace: default
+spec:
+  selector:
+    app: workforce-api
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: workforce-api
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: workforce-api
+  template:
+    metadata:
+      labels:
+        app: workforce-api
+    spec:
+      containers:
+        - name: api
+          image: ghcr.io/tim-rejet/workforce-api:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
+            - name: TEMPORAL_ADDRESS
+              value: "temporal:7233"
+            - name: DATABASE_URL
+              value: "postgres://workforce:workforce@postgres:5432/workforce"
+            - name: MINIO_ENDPOINT
+              value: "minio:9000"
+            - name: MINIO_ROOT_USER
+              value: "minioadmin"
+            - name: MINIO_ROOT_PASSWORD
+              value: "minioadmin"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
