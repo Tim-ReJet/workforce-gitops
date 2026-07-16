@@ -37,8 +37,10 @@ spec:
           env:
             - name: PORT
               value: "3000"
-            - name: TEMPORAL_ADDRESS
-              value: "temporal:7233"
+            - name: TEMPORAL_HOST
+            - name: TEMPORAL_PORT
+              value: "7233"
+              value: "temporal"
             - name: DATABASE_URL
               value: "postgres://workforce:workforce@postgres:5432/workforce"
             - name: MINIO_ENDPOINT
