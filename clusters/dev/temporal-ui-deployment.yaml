@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - env:
-            - name: TEMPORAL_ADDRESS
+            - name: TEMPORAL_GRPC_ENDPOINT
               value: temporal:7233
             - name: TEMPORAL_CORS_ORIGINS
               value: http://localhost:3000
