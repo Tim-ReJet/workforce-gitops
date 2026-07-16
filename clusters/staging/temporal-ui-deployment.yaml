@@ -1,6 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: default
   annotations:
     kompose.cmd: kompose convert -f /tmp/workforce-compose.yaml -o k8s/
     kompose.version: 1.38.0 (HEAD)
