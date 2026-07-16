@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: temporal-ui-config
+  namespace: default
+data:
+  config.yaml: |
+    temporalGrpcAddress: temporal:7233
+    port: 8080
+    enableUi: true
+    cors:
+      cookieInsecure: true
+      allowedOrigins:
+        - http://localhost:3000
