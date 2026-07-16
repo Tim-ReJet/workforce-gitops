@@ -35,7 +35,9 @@ spec:
           livenessProbe:
             exec:
               command:
-                - pg_isready -U workforce
+                - /bin/sh
+              - -c
+              - pg_isready -U workforce
             failureThreshold: 10
             periodSeconds: 5
           name: postgres
