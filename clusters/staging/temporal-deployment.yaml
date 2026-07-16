@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f /tmp/workforce-compose.yaml -o k8s/
+    kompose.version: 1.38.0 (HEAD)
+  labels:
+    io.kompose.service: temporal
+  name: temporal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: temporal
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f /tmp/workforce-compose.yaml -o k8s/
+        kompose.version: 1.38.0 (HEAD)
+      labels:
+        io.kompose.service: temporal
+    spec:
+      containers:
+        - env:
+            - name: DB
+              value: postgres12
+            - name: DB_PORT
+              value: "5432"
+            - name: POSTGRES_PWD
+              value: workforce
+            - name: POSTGRES_SEEDS
+              value: postgres
+            - name: POSTGRES_USER
+              value: workforce
+          image: temporalio/auto-setup:latest
+          livenessProbe:
+            exec:
+              command:
+                - tctl
+                - --address
+                - temporal:7233
+                - cluster
+                - health
+            failureThreshold: 5
+            periodSeconds: 10
+          name: temporal
+          ports:
+            - containerPort: 7233
+              protocol: TCP
+            - containerPort: 8233
+              protocol: TCP
+      restartPolicy: Always
