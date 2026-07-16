@@ -1,13 +1,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: default
   annotations:
     kompose.cmd: kompose convert -f /tmp/workforce-compose.yaml -o k8s/
     kompose.version: 1.38.0 (HEAD)
   labels:
     io.kompose.service: temporal-ui
   name: temporal-ui
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -15,21 +15,24 @@ spec:
       io.kompose.service: temporal-ui
   template:
     metadata:
-      annotations:
-        kompose.cmd: kompose convert -f /tmp/workforce-compose.yaml -o k8s/
-        kompose.version: 1.38.0 (HEAD)
       labels:
         io.kompose.service: temporal-ui
     spec:
       containers:
-        - env:
-            - name: TEMPORAL_GRPC_ENDPOINT
-              value: temporal:7233
-            - name: TEMPORAL_CORS_ORIGINS
-              value: http://localhost:3000
-          image: temporalio/ui:2.31.2
+        - image: temporalio/ui:2.31.2
           name: temporal-ui
           ports:
             - containerPort: 8080
-              protocol: TCP
+          volumeMounts:
+            - name: config
+              mountPath: /etc/temporal-ui/config.yaml
+              subPath: config.yaml
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+      volumes:
+        - name: config
+          configMap:
+            name: temporal-ui-config
       restartPolicy: Always
