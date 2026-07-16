@@ -38,9 +38,9 @@ spec:
             - name: PORT
               value: "3000"
             - name: TEMPORAL_HOST
+              value: "temporal"
             - name: TEMPORAL_PORT
               value: "7233"
-              value: "temporal"
             - name: DATABASE_URL
               value: "postgres://workforce:workforce@postgres:5432/workforce"
             - name: MINIO_ENDPOINT
@@ -60,11 +60,11 @@ spec:
             httpGet:
               path: /api/health
               port: 3000
-            initialDelaySeconds: 10
+            initialDelaySeconds: 20
             periodSeconds: 30
           readinessProbe:
             httpGet:
               path: /api/health
               port: 3000
-            initialDelaySeconds: 5
+            initialDelaySeconds: 10
             periodSeconds: 10
