@@ -25,7 +25,7 @@ spec:
             - containerPort: 8080
           volumeMounts:
             - name: config
-              mountPath: /etc/temporal-ui/config.yaml
+              mountPath: /home/temporal/config/docker.yaml
               subPath: config.yaml
           resources:
             limits:
