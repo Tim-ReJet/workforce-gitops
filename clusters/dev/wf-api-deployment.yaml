@@ -26,6 +26,8 @@ spec:
       labels:
         app: workforce-api
     spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
       containers:
         - name: api
           image: ghcr.io/tim-rejet/workforce-api:latest
