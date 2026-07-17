@@ -38,8 +38,12 @@ spec:
           env:
             - name: WOODPECKER_HOST
               value: "http://woodpecker-server:8000"
-            - name: WOODPECKER_OPEN
+            - name: WOODPECKER_GITHUB
               value: "true"
+            - name: WOODPECKER_GITHUB_CLIENT
+              value: "Ov23liL9F9btYhnQPq3E"
+            - name: WOODPECKER_GITHUB_SECRET
+              value: "2fe7271446e811f50c9d4ed511ee90387b5883c4"
             - name: WOODPECKER_AGENT_SECRET
               value: "workforce-dev-secret"
             - name: WOODPECKER_DATABASE_DRIVER
