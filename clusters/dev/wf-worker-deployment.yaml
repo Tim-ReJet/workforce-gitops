@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: workforce-worker
+  namespace: default
+spec:
+  selector:
+    app: workforce-worker
+  ports:
+    - name: metrics
+      port: 9090
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: workforce-worker
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: workforce-worker
+  template:
+    metadata:
+      labels:
+        app: workforce-worker
+    spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
+      containers:
+        - name: worker
+          image: ghcr.io/tim-rejet/workforce-worker:latest
+          imagePullPolicy: Always
+          env:
+            - name: TEMPORAL_ADDRESS
+              value: "temporal:7233"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
