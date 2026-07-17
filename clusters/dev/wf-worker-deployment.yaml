@@ -29,8 +29,8 @@ spec:
         - name: ghcr-pull-secret
       containers:
         - name: worker
-          image: ghcr.io/tim-rejet/workforce-worker:latest
-          imagePullPolicy: Always
+          image: workforce-worker:v3
+          imagePullPolicy: Never
           env:
             - name: TEMPORAL_ADDRESS
               value: "temporal:7233"
